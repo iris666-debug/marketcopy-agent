@@ -72,9 +72,13 @@ export default function App() {
     await new Promise((resolve) => setTimeout(resolve, 320));
     setStatus('checking');
     await new Promise((resolve) => setTimeout(resolve, 260));
-    const nextResult = await generateListing(input, mode);
-    setResult(nextResult);
-    setStatus('completed');
+    try {
+      const nextResult = await generateListing(input, mode);
+      setResult(nextResult);
+      setStatus('completed');
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (

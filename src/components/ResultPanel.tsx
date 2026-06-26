@@ -10,9 +10,13 @@ function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1200);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1200);
+    } catch {
+      setCopied(false);
+    }
   };
 
   return (
@@ -84,13 +88,17 @@ export function ResultPanel({ result }: ResultPanelProps) {
         </div>
         <p className="risk-summary">{result.riskReport.summary}</p>
         <div className="risk-list">
-          {result.riskReport.findings.map((finding) => (
-            <div className={`risk-item ${finding.level}`} key={finding.term}>
-              <strong>{finding.term}</strong>
-              <p>{finding.reason}</p>
-              <span>{finding.suggestion}</span>
-            </div>
-          ))}
+          {result.riskReport.findings.length > 0 ? (
+            result.riskReport.findings.map((finding) => (
+              <div className={`risk-item ${finding.level}`} key={finding.term}>
+                <strong>{finding.term}</strong>
+                <p>{finding.reason}</p>
+                <span>{finding.suggestion}</span>
+              </div>
+            ))
+          ) : (
+            <p className="description-copy">No local risky expressions were found.</p>
+          )}
         </div>
       </article>
     </section>
