@@ -42,7 +42,7 @@ export function ResultPanel({ result }: ResultPanelProps) {
         <div className="panel-header">
           <div>
             <p className="eyebrow">Agent 1</p>
-            <h2>Style Analysis</h2>
+            <h2>Style Analysis / 风格分析</h2>
           </div>
           <CopyButton text={JSON.stringify(result.styleAnalysis, null, 2)} />
         </div>
@@ -65,7 +65,7 @@ export function ResultPanel({ result }: ResultPanelProps) {
         <div className="panel-header">
           <div>
             <p className="eyebrow">Agent 2</p>
-            <h2>Generated Listing</h2>
+            <h2>Generated Listing / 英文文案</h2>
           </div>
           <CopyButton text={listingText} />
         </div>
@@ -82,7 +82,7 @@ export function ResultPanel({ result }: ResultPanelProps) {
         <div className="panel-header">
           <div>
             <p className="eyebrow">Agent 3</p>
-            <h2>Risk Check</h2>
+            <h2>Risk Check / 风险检查</h2>
           </div>
           <CopyButton text={JSON.stringify(result.riskReport, null, 2)} />
         </div>

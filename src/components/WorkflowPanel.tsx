@@ -1,11 +1,11 @@
 import { AlertCircle, CheckCircle2, Circle, Loader2 } from 'lucide-react';
+import type { ModelOption } from '../lib/modelOptions';
 
-type RunMode = 'mock' | 'api';
 type WorkflowStatus = 'idle' | 'analyzing' | 'generating' | 'checking' | 'completed' | 'error';
 
 interface WorkflowPanelProps {
   logs: string[];
-  mode: RunMode;
+  model: ModelOption;
   status: WorkflowStatus;
 }
 
@@ -26,7 +26,7 @@ function stageState(stage: (typeof stages)[number]['id'], status: WorkflowStatus
   return 'idle';
 }
 
-export function WorkflowPanel({ logs, mode, status }: WorkflowPanelProps) {
+export function WorkflowPanel({ logs, model, status }: WorkflowPanelProps) {
   return (
     <section className="panel workflow-panel" aria-label="Agent workflow">
       <div className="panel-header">
@@ -34,7 +34,7 @@ export function WorkflowPanel({ logs, mode, status }: WorkflowPanelProps) {
           <p className="eyebrow">Workflow</p>
           <h2>Agent Stages</h2>
         </div>
-        <span className={`mode-pill ${mode}`}>{mode === 'api' ? 'API mode' : 'Mock mode'}</span>
+        <span className={`mode-pill ${model.provider}`}>{model.costLabel}</span>
       </div>
 
       <div className="stage-list">

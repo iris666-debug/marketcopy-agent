@@ -84,15 +84,39 @@ button:disabled {
   justify-content: flex-end;
 }
 
-.mode-toggle {
-  background: #e9eef2;
+.model-select {
+  align-items: flex-start;
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 8px;
-  display: flex;
-  padding: 3px;
+  display: grid;
+  gap: 5px;
+  min-width: 260px;
+  padding: 9px 10px;
 }
 
-.mode-toggle button,
+.model-select label {
+  color: var(--blue);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.model-select select {
+  background: #fbfcfd;
+  border: 1px solid #cfd8df;
+  border-radius: 7px;
+  color: var(--ink);
+  min-height: 36px;
+  outline: none;
+  padding: 0 9px;
+}
+
+.model-select span {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
 .primary-button,
 .secondary-button,
 .icon-button {
@@ -104,17 +128,6 @@ button:disabled {
   justify-content: center;
   min-height: 36px;
   padding: 0 12px;
-}
-
-.mode-toggle button {
-  background: transparent;
-  color: #52606d;
-}
-
-.mode-toggle button.active {
-  background: #ffffff;
-  color: var(--ink);
-  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
 }
 
 .primary-button {
@@ -183,7 +196,12 @@ button:disabled {
   color: #334eac;
 }
 
-.mode-pill.api {
+.mode-pill.gemini {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.mode-pill.deepseek {
   background: #fff7ed;
   color: #9a3412;
 }
@@ -449,11 +467,10 @@ textarea:focus {
   }
 
   .topbar-actions,
-  .mode-toggle {
+  .model-select {
     width: 100%;
   }
 
-  .mode-toggle button,
   .primary-button,
   .secondary-button {
     flex: 1;

@@ -1,26 +1,21 @@
 import { useMemo, useState } from 'react';
-import { ClipboardCheck, Database, Loader2, Play, RotateCcw, Sparkles } from 'lucide-react';
+import { ClipboardCheck, Loader2, Play, RotateCcw } from 'lucide-react';
 import { InputPanel } from './components/InputPanel';
 import { ResultPanel } from './components/ResultPanel';
 import { WorkflowPanel } from './components/WorkflowPanel';
 import { sampleProductInput } from './data/sampleData';
 import { generateListing } from './lib/apiClient';
+import { DEFAULT_MODEL, MODEL_OPTIONS, getModelOption, isApiModel, type ModelId } from './lib/modelOptions';
 import { createMockWorkflowResult } from './lib/mockWorkflow';
 import type { ProductInput, WorkflowResult } from './types';
 
-type RunMode = 'mock' | 'api';
 type WorkflowStatus = 'idle' | 'analyzing' | 'generating' | 'checking' | 'completed' | 'error';
 
-const emptyInput: ProductInput = {
-  historicalListings: ['', '', ''],
-  productName: '',
-  sellingPoints: '',
-  keywords: '',
-  desiredTone: 'premium but practical',
-};
-
-function buildLogs(status: WorkflowStatus, mode: RunMode): string[] {
-  const source = mode === 'api' ? 'API mode selected' : 'Mock mode selected';
+function buildLogs(status: WorkflowStatus, selectedModel: ModelId): string[] {
+  const model = getModelOption(selectedModel);
+  const source = isApiModel(selectedModel)
+    ? `${model.label} selected, server key protected`
+    : 'Mock Demo selected, no token cost';
   const logs = [source];
 
   if (['analyzing', 'generating', 'checking', 'completed'].includes(status)) {
@@ -48,12 +43,13 @@ function buildLogs(status: WorkflowStatus, mode: RunMode): string[] {
 
 export default function App() {
   const [input, setInput] = useState<ProductInput>(sampleProductInput);
-  const [mode, setMode] = useState<RunMode>('mock');
+  const [selectedModel, setSelectedModel] = useState<ModelId>(DEFAULT_MODEL);
   const [status, setStatus] = useState<WorkflowStatus>('idle');
   const [result, setResult] = useState<WorkflowResult | null>(createMockWorkflowResult(sampleProductInput));
 
+  const selectedModelOption = getModelOption(selectedModel);
   const isRunning = ['analyzing', 'generating', 'checking'].includes(status);
-  const logs = useMemo(() => buildLogs(status, mode), [mode, status]);
+  const logs = useMemo(() => buildLogs(status, selectedModel), [selectedModel, status]);
 
   const canRun =
     input.productName.trim().length > 0 &&
@@ -73,7 +69,7 @@ export default function App() {
     setStatus('checking');
     await new Promise((resolve) => setTimeout(resolve, 260));
     try {
-      const nextResult = await generateListing(input, mode);
+      const nextResult = await generateListing(input, selectedModel);
       setResult(nextResult);
       setStatus('completed');
     } catch {
@@ -87,18 +83,25 @@ export default function App() {
         <div>
           <p className="eyebrow">AIGC / Agent Product MVP</p>
           <h1>MarketCopy Agent</h1>
-          <p className="subtitle">Turn seller interview insights into a staged AI workflow for English product listings.</p>
+          <p className="subtitle">
+            基于卖家访谈的 AIGC Agent 工作流：Style Clone → Listing Generation → Risk Check，输出英文商品文案。
+          </p>
         </div>
         <div className="topbar-actions" aria-label="Workflow actions">
-          <div className="mode-toggle" role="group" aria-label="Generation mode">
-            <button className={mode === 'mock' ? 'active' : ''} onClick={() => setMode('mock')} type="button">
-              <Database size={16} />
-              Mock
-            </button>
-            <button className={mode === 'api' ? 'active' : ''} onClick={() => setMode('api')} type="button">
-              <Sparkles size={16} />
-              API
-            </button>
+          <div className="model-select">
+            <label htmlFor="model-select">Model</label>
+            <select
+              id="model-select"
+              onChange={(event) => setSelectedModel(event.target.value as ModelId)}
+              value={selectedModel}
+            >
+              {MODEL_OPTIONS.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label} · {option.costLabel}
+                </option>
+              ))}
+            </select>
+            <span>{selectedModelOption.interviewNote}</span>
           </div>
           <button className="secondary-button" onClick={() => setInput(sampleProductInput)} type="button">
             <RotateCcw size={16} />
@@ -114,7 +117,7 @@ export default function App() {
       <section className="workspace-grid">
         <InputPanel input={input} onChange={setInput} />
         <div className="right-column">
-          <WorkflowPanel logs={logs} mode={mode} status={status} />
+          <WorkflowPanel logs={logs} model={selectedModelOption} status={status} />
           {result ? (
             <ResultPanel result={result} />
           ) : (

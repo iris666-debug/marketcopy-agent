@@ -2,7 +2,7 @@
 
 MarketCopy Agent is an AIGC / Agent workflow MVP for English product listing generation.
 
-The project comes from a real需求访谈 with an Amazon seller friend. The goal is not to present myself as a cross-border ecommerce expert. The goal is to show how a product assistant can turn a real business pain point into a runnable AI workflow: style analysis, listing generation, and risky expression checking.
+This project comes from a real needs interview with an Amazon seller friend. The goal is not to pretend to be a cross-border ecommerce expert. The goal is to show how a product assistant can turn a real business pain point into a runnable AI workflow: style analysis, listing generation, and risky expression checking.
 
 ## What It Demonstrates
 
@@ -10,6 +10,7 @@ The project comes from a real需求访谈 with an Amazon seller friend. The goal
 - AIGC workflow decomposition.
 - Agent-style staged processing.
 - Prompt design with structured JSON output.
+- Model selection with free-first and low-cost options.
 - Real API integration with mock fallback.
 - Token and demo-risk control.
 
@@ -17,8 +18,11 @@ The project comes from a real需求访谈 with an Amazon seller friend. The goal
 
 1. Paste three historical English product listings.
 2. Enter a new product name, selling points, keywords, and desired tone.
-3. Run the workflow in Mock mode or API mode.
-4. Review three Agent outputs:
+3. Select a model:
+   - Mock Demo: no token cost, stable for interviews.
+   - Gemini Flash-Lite / Flash: free-tier first for API demos.
+   - DeepSeek Chat: low-cost backup provider.
+4. Run the workflow and review three Agent outputs:
    - Style Clone Agent
    - Listing Generation Agent
    - Risk Check Agent
@@ -29,7 +33,7 @@ The project comes from a real需求访谈 with an Amazon seller friend. The goal
 - React + TypeScript + Vite
 - Vitest
 - Vercel serverless function
-- DeepSeek-compatible chat completion API
+- Gemini API and DeepSeek chat completion API
 
 ## Local Setup
 
@@ -47,12 +51,13 @@ npm.cmd run dev
 
 ## API Setup
 
-Mock mode works without any API key.
+Mock Demo works without any API key.
 
 For API mode, create `.env.local`:
 
 ```bash
-DEEPSEEK_API_KEY=your_key_here
+GEMINI_API_KEY=your_gemini_key_here
+DEEPSEEK_API_KEY=your_deepseek_key_here
 ```
 
 Never commit `.env.local`. The repository only includes `.env.example`.
@@ -66,20 +71,26 @@ npm run build
 
 ## Cost Control Design
 
+- Mock Demo is the default, so interviews do not spend tokens.
+- Gemini Flash-Lite is the preferred API demo option because it supports a free tier.
 - One model call returns all three workflow sections.
 - Historical listing inputs are length-limited.
 - The prompt asks for compact JSON only.
 - Obvious risky terms can be handled by local rules.
-- Mock mode protects demos from network or API issues.
+- If an API key is missing or a request fails, the app falls back to mock output with the same data shape.
 
 ## Interview Talking Point
 
-I talked with an Amazon seller friend and learned that English Listing creation often requires referencing past high-performing copy, adapting the style for a new product, and avoiding risky exaggerated wording. I used AI to help organize the product concept, then designed and built a three-step Agent workflow MVP. The project focuses on AIGC workflow design, structured prompt output, API integration, cost control, and demo-ready product delivery.
+I talked with an Amazon seller friend and learned that English listing creation often requires referencing past high-performing copy, adapting the style for a new product, and avoiding risky exaggerated wording. I used AI to help organize the product concept, then designed and built a three-step Agent workflow MVP. The project focuses on AIGC workflow design, structured prompt output, API integration, cost control, model selection, and demo-ready product delivery.
+
+## 中文面试讲法
+
+我不是把自己包装成跨境电商专家，而是从一个真实卖家访谈里抽象需求：卖家需要参考历史高转化英文文案，为新品生成风格一致的 Listing，同时避免夸大、绝对化等风险表达。所以我设计了一个 AIGC Agent 工作流，把任务拆成风格分析、文案生成、风险检查三个阶段，并做了 Mock 演示、免费优先模型选择、API 失败降级等产品化细节。
 
 ## Resume Bullet
 
-MarketCopy Agent · AIGC商品文案工作流工具
+MarketCopy Agent · AIGC 商品文案工作流工具
 
-- 基于亚马逊卖家访谈需求，设计并开发面向英文商品文案生成场景的 AIGC Agent MVP，将历史爆款文案风格分析、新品 Listing 生成与风险表达检测串联为完整工作流。
-- 接入真实模型 API 并保留 Mock 演示模式，通过结构化 JSON 输出、单次 API 调用和本地风险词规则降低 token 成本与演示风险。
+- 基于亚马逊卖家访谈需求，设计并开发面向英文商品文案生成场景的 AIGC Agent MVP，将历史文案风格分析、新品 Listing 生成与风险表达检测串联为完整工作流。
+- 接入 Gemini / DeepSeek 模型 API 并保留 Mock 演示模式，通过模型选择、结构化 JSON 输出、单次 API 调用和本地风险词规则降低 token 成本与演示风险。
 - 独立完成需求拆解、产品流程设计、Prompt 结构设计、前端开发、部署文档和面试演示脚本。

@@ -1,10 +1,9 @@
 import { createMockWorkflowResult } from './mockWorkflow';
+import { isApiModel, type ModelId } from './modelOptions';
 import type { ProductInput, WorkflowResult } from '../types';
 
-export type RunMode = 'mock' | 'api';
-
-export async function generateListing(input: ProductInput, mode: RunMode): Promise<WorkflowResult> {
-  if (mode === 'mock') {
+export async function generateListing(input: ProductInput, model: ModelId): Promise<WorkflowResult> {
+  if (!isApiModel(model)) {
     return createMockWorkflowResult(input);
   }
 
@@ -14,7 +13,7 @@ export async function generateListing(input: ProductInput, mode: RunMode): Promi
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ input, mode }),
+      body: JSON.stringify({ input, mode: 'api', model }),
     });
 
     if (!response.ok) {
@@ -27,7 +26,7 @@ export async function generateListing(input: ProductInput, mode: RunMode): Promi
       ...createMockWorkflowResult(input),
       usageNotes: {
         mode: 'api-fallback',
-        model: 'mock-workflow-v1',
+        model: `${model} -> mock-workflow-v1`,
         costControl: [
           'API request failed, so the app used mock fallback for demo stability.',
           'No frontend API key was exposed.',
