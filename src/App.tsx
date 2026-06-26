@@ -4,6 +4,7 @@ import { InputPanel } from './components/InputPanel';
 import { ResultPanel } from './components/ResultPanel';
 import { WorkflowPanel } from './components/WorkflowPanel';
 import { sampleProductInput } from './data/sampleData';
+import { generateListing } from './lib/apiClient';
 import { createMockWorkflowResult } from './lib/mockWorkflow';
 import type { ProductInput, WorkflowResult } from './types';
 
@@ -71,7 +72,8 @@ export default function App() {
     await new Promise((resolve) => setTimeout(resolve, 320));
     setStatus('checking');
     await new Promise((resolve) => setTimeout(resolve, 260));
-    setResult(createMockWorkflowResult(input));
+    const nextResult = await generateListing(input, mode);
+    setResult(nextResult);
     setStatus('completed');
   };
 
