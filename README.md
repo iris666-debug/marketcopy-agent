@@ -4,6 +4,8 @@ MarketCopy Agent is an AIGC / Agent workflow MVP for English product listing gen
 
 For Chinese interview practice and a step-by-step demo script, see [docs/interview-playbook-cn.md](docs/interview-playbook-cn.md).
 
+For copy-ready Chinese sharing text for resumes, job platforms, portfolios, and social posts, see [docs/share-kit-cn.md](docs/share-kit-cn.md).
+
 Public mock demo URL after GitHub Pages is enabled:
 
 ```text
