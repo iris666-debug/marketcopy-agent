@@ -1,9 +1,27 @@
 import type { ProductInput, WorkflowResult } from '../types';
 import { detectRiskTerms } from './riskRules';
 
+function splitItems(value: string): string[] {
+  return value
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function titleCase(value: string): string {
+  return value.replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
 export function createMockWorkflowResult(input: ProductInput): WorkflowResult {
   const riskText = `${input.productName} Best wireless earbuds with 100% guaranteed comfort.`;
   const findings = detectRiskTerms(riskText);
+  const sellingPoints = splitItems(input.sellingPoints);
+  const keywords = splitItems(input.keywords);
+  const titleFeatures = sellingPoints.slice(0, 3).map(titleCase);
+  const primaryFeature = sellingPoints[0] || 'practical everyday performance';
+  const secondFeature = sellingPoints[1] || 'easy daily use';
+  const thirdFeature = sellingPoints[2] || 'reliable product design';
+  const fourthFeature = sellingPoints[3] || 'simple care and storage';
 
   return {
     styleAnalysis: {
@@ -14,19 +32,19 @@ export function createMockWorkflowResult(input: ProductInput): WorkflowResult {
         'Connect each feature to a daily use scenario.',
         'Use concrete product details instead of broad claims.',
       ],
-      reusablePhrases: ['long battery life', 'secure fit', 'clear calls', 'compact charging case'],
+      reusablePhrases: sellingPoints.slice(0, 4),
     },
     generatedListing: {
-      title: `${input.productName} with Noise Cancelling, Long Battery Life, Water Resistant Design, and Secure Fit`,
+      title: `${input.productName} with ${titleFeatures.join(', ')}`,
       bullets: [
-        `Built for daily listening: ${input.sellingPoints.split(',')[0]?.trim() || 'long battery life'} keeps music and calls ready through work, travel, and workouts.`,
-        'Comfortable secure fit: soft ear tips help the earbuds stay stable during running, commuting, and focused work sessions.',
-        'Clear call experience: tuned microphones help voices sound natural during meetings, calls, and quick voice notes.',
-        'Water resistant design: made for gym bags, outdoor walks, and busy routines where light sweat or splashes can happen.',
-        `Keyword-ready positioning: naturally includes ${input.keywords} while keeping the copy readable for shoppers.`,
+        `Built around ${primaryFeature}: turns the core product benefit into a clear shopper-facing promise.`,
+        `Designed for daily use: ${secondFeature} helps the product fit naturally into common routines.`,
+        `Practical details: ${thirdFeature} gives shoppers a concrete reason to compare and remember the product.`,
+        `Easy ownership: ${fourthFeature} supports a smoother experience after purchase.`,
+        `Keyword-ready positioning: naturally includes ${keywords.join(', ')} while keeping the copy readable for shoppers.`,
       ],
       description:
-        `${input.productName} is designed for shoppers who want reliable audio, practical comfort, and a compact everyday carry. The listing keeps a ${input.desiredTone} tone while turning product features into clear usage benefits.`,
+        `${input.productName} is designed for shoppers who want ${sellingPoints.slice(0, 3).join(', ')}. The listing keeps a ${input.desiredTone} tone while turning product features into clear usage benefits.`,
     },
     riskReport: {
       summary: findings.length

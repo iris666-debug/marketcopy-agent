@@ -320,6 +320,42 @@ textarea:focus {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.run-status {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  grid-column: 1 / -1;
+  justify-content: space-between;
+  padding: 11px 13px;
+}
+
+.run-status strong {
+  white-space: nowrap;
+}
+
+.run-status span {
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.run-status.mock {
+  background: #f8fafc;
+}
+
+.run-status.api {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.run-status.fallback {
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
 .result-card.wide {
   grid-row: span 2;
 }
@@ -464,6 +500,15 @@ textarea:focus {
   .field-grid,
   .results-grid {
     grid-template-columns: 1fr;
+  }
+
+  .run-status {
+    align-items: flex-start;
+    display: grid;
+  }
+
+  .run-status span {
+    text-align: left;
   }
 
   .topbar-actions,

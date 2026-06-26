@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Copy } from 'lucide-react';
+import { getRunStatusCopy } from '../lib/runStatus';
 import type { WorkflowResult } from '../types';
 
 interface ResultPanelProps {
@@ -28,6 +29,7 @@ function CopyButton({ text }: { text: string }) {
 }
 
 export function ResultPanel({ result }: ResultPanelProps) {
+  const runStatus = getRunStatusCopy(result.usageNotes);
   const listingText = [
     result.generatedListing.title,
     '',
@@ -38,6 +40,11 @@ export function ResultPanel({ result }: ResultPanelProps) {
 
   return (
     <section className="results-grid" aria-label="Workflow results">
+      <div className={`run-status ${runStatus.tone}`}>
+        <strong>{runStatus.label}</strong>
+        <span>{runStatus.detail}</span>
+      </div>
+
       <article className="panel result-card">
         <div className="panel-header">
           <div>

@@ -3,10 +3,9 @@ import { ClipboardCheck, Loader2, Play, RotateCcw } from 'lucide-react';
 import { InputPanel } from './components/InputPanel';
 import { ResultPanel } from './components/ResultPanel';
 import { WorkflowPanel } from './components/WorkflowPanel';
-import { sampleProductInput } from './data/sampleData';
+import { sampleScenarios } from './data/sampleData';
 import { generateListing } from './lib/apiClient';
 import { DEFAULT_MODEL, MODEL_OPTIONS, getModelOption, isApiModel, type ModelId } from './lib/modelOptions';
-import { createMockWorkflowResult } from './lib/mockWorkflow';
 import type { ProductInput, WorkflowResult } from './types';
 
 type WorkflowStatus = 'idle' | 'analyzing' | 'generating' | 'checking' | 'completed' | 'error';
@@ -42,10 +41,11 @@ function buildLogs(status: WorkflowStatus, selectedModel: ModelId): string[] {
 }
 
 export default function App() {
-  const [input, setInput] = useState<ProductInput>(sampleProductInput);
+  const [input, setInput] = useState<ProductInput>(sampleScenarios[0].input);
   const [selectedModel, setSelectedModel] = useState<ModelId>(DEFAULT_MODEL);
   const [status, setStatus] = useState<WorkflowStatus>('idle');
-  const [result, setResult] = useState<WorkflowResult | null>(createMockWorkflowResult(sampleProductInput));
+  const [result, setResult] = useState<WorkflowResult | null>(null);
+  const [sampleIndex, setSampleIndex] = useState(0);
 
   const selectedModelOption = getModelOption(selectedModel);
   const isRunning = ['analyzing', 'generating', 'checking'].includes(status);
@@ -77,6 +77,14 @@ export default function App() {
     }
   };
 
+  const loadNextSample = () => {
+    const nextIndex = (sampleIndex + 1) % sampleScenarios.length;
+    setSampleIndex(nextIndex);
+    setInput(sampleScenarios[nextIndex].input);
+    setResult(null);
+    setStatus('idle');
+  };
+
   return (
     <main className="app-shell">
       <section className="topbar" aria-label="Project header">
@@ -103,9 +111,9 @@ export default function App() {
             </select>
             <span>{selectedModelOption.interviewNote}</span>
           </div>
-          <button className="secondary-button" onClick={() => setInput(sampleProductInput)} type="button">
+          <button className="secondary-button" onClick={loadNextSample} type="button">
             <RotateCcw size={16} />
-            Sample
+            {sampleScenarios[sampleIndex].label}
           </button>
           <button className="primary-button" disabled={isRunning} onClick={runWorkflow} type="button">
             {isRunning ? <Loader2 className="spin" size={17} /> : <Play size={17} />}
@@ -123,7 +131,7 @@ export default function App() {
           ) : (
             <div className="empty-result">
               <ClipboardCheck size={28} />
-              <p>Generate once to preview style analysis, listing copy, and risk checks.</p>
+              <p>Click Generate to run the workflow. Mock Demo is playable without any API key.</p>
             </div>
           )}
         </div>

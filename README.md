@@ -4,6 +4,12 @@ MarketCopy Agent is an AIGC / Agent workflow MVP for English product listing gen
 
 For Chinese interview practice and a step-by-step demo script, see [docs/interview-playbook-cn.md](docs/interview-playbook-cn.md).
 
+Public mock demo URL after GitHub Pages is enabled:
+
+```text
+https://iris666-debug.github.io/marketcopy-agent/
+```
+
 This project comes from a real needs interview with an Amazon seller friend. The goal is not to pretend to be a cross-border ecommerce expert. The goal is to show how a product assistant can turn a real business pain point into a runnable AI workflow: style analysis, listing generation, and risky expression checking.
 
 ## What It Demonstrates
@@ -29,6 +35,12 @@ This project comes from a real needs interview with an Amazon seller friend. The
    - Listing Generation Agent
    - Risk Check Agent
 5. Copy the generated listing for demo or iteration.
+
+## Demo Modes
+
+- Local / GitHub Pages public demo: use Mock Demo. It is fully playable, costs nothing, and does not need an API key.
+- Live AI demo: deploy with a serverless runtime such as Vercel and configure `GEMINI_API_KEY` or `DEEPSEEK_API_KEY`.
+- If the API route or key is unavailable, the app falls back to Mock Demo and clearly labels the result as fallback output.
 
 ## Tech Stack
 

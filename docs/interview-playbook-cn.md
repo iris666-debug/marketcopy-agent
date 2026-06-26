@@ -22,7 +22,14 @@ https://github.com/iris666-debug/marketcopy-agent
 
 - 本地页面：`http://127.0.0.1:5173/`，这是你电脑上正在运行的项目，面试演示最稳。
 - GitHub 仓库：给面试官看代码、README、文档、提交记录。
-- 线上部署：以后可以部署到 Vercel/Netlify，现在不是必须；一周内找工作，先保证本地演示稳定。
+- GitHub Pages 公开试玩链接：`https://iris666-debug.github.io/marketcopy-agent/`，适合放简历、Boss、作品集、小红书简介。
+- Vercel Live AI 版：以后配置 API key 后使用，适合演示真实模型调用。
+
+再说清楚一个关键点：
+
+- Mock Demo：现在就能玩，不需要 API key，不花钱，适合全平台公开发链接。
+- Live AI：需要部署到 Vercel 这类支持后端函数的平台，并配置 Gemini 或 DeepSeek API key。
+- GitHub Pages 这类纯静态托管只能跑 Mock Demo，不能安全地放 API key。
 
 ## 1. 这个项目到底是干嘛的？
 
@@ -174,6 +181,12 @@ Mock Demo · No token cost
 你说：
 
 > 我先用 Mock Demo 演示，因为面试环境网络和 API key 不一定稳定。真实 API 也接了，但演示时我优先保证流程稳定。
+
+如果结果顶部显示 `Mock demo`，说明没有真实调用 AI，这是正常的公开试玩模式。
+
+如果结果顶部显示 `Live AI`，说明真实模型 API 返回了结果。
+
+如果结果顶部显示 `Fallback mock`，说明你选了 Gemini/DeepSeek，但 API 路由或 key 不可用，所以系统自动兜底到 Mock。
 
 ### 第二步：说明左边输入
 
@@ -445,11 +458,13 @@ MarketCopy Agent · AIGC 商品文案工作流工具
 1. 打开 `http://127.0.0.1:5173/`。
 2. 说一句项目定位：真实卖家访谈 + AIGC Agent 工作流。
 3. 选择 Mock Demo。
-4. 解释左侧输入。
-5. 点击 Generate。
-6. 依次解释三个 Agent 输出。
-7. 补一句模型选择、成本控制、API 失败兜底。
-8. 最后说下一步迭代计划。
+4. 点样例按钮切换一个产品，比如 Heated Lunch Box 或 Travel Organizer。
+5. 解释左侧输入。
+6. 点击 Generate。
+7. 先解释结果顶部的 Mock demo / Live AI / Fallback mock 状态。
+8. 依次解释三个 Agent 输出。
+9. 补一句模型选择、成本控制、API 失败兜底。
+10. 最后说下一步迭代计划。
 
 练到你能不看稿讲完 2 分钟，就够用了。
 
