@@ -2,6 +2,8 @@
 
 MarketCopy Agent is an AIGC / Agent workflow MVP for English product listing generation.
 
+For Chinese interview practice and a step-by-step demo script, see [docs/interview-playbook-cn.md](docs/interview-playbook-cn.md).
+
 This project comes from a real needs interview with an Amazon seller friend. The goal is not to pretend to be a cross-border ecommerce expert. The goal is to show how a product assistant can turn a real business pain point into a runnable AI workflow: style analysis, listing generation, and risky expression checking.
 
 ## What It Demonstrates
